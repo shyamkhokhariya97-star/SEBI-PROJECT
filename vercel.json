@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/", "destination": "/index.html" },
     { "source": "/files", "destination": "/api/files" },
     { "source": "/compare", "destination": "/api/compare" },
     { "source": "/download-excel", "destination": "/api/download-excel" },
