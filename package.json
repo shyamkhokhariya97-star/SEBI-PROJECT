@@ -1,0 +1,22 @@
+{
+  "name": "raj-work-sebi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "run": "node raj.js",
+    "start": "node ui-server.js",
+    "start-ui": "node ui-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "exceljs": "^4.4.0",
+    "fetch-cookie": "^3.2.0",
+    "jsdom": "^29.0.1",
+    "node-fetch": "^2.7.0",
+    "tough-cookie": "^6.0.1"
+  }
+}

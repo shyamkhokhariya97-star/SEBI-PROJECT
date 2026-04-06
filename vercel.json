@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/files", "destination": "/api/files" },
+    { "source": "/compare", "destination": "/api/compare" },
+    { "source": "/download-excel", "destination": "/api/download-excel" },
+    { "source": "/run-scraper", "destination": "/api/run-scraper" }
+  ]
+}

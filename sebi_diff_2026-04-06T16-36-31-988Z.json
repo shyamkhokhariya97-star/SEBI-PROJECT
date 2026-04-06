@@ -1,0 +1,31 @@
+{
+  "oldFile": "Sebi_Record_2026-04-04_16-35-46.json",
+  "newFile": "Sebi_Record_2026-04-06_22-05-27.json",
+  "counts": {
+    "oldRecords": 1857,
+    "newRecords": 1859,
+    "added": 2,
+    "removed": 0,
+    "updated": 0
+  },
+  "added": [
+    {
+      "Name": "BHARAT SPECIAL OPPORTUNITY FUND",
+      "Registration No.": "IN/AIF2/26-27/2127",
+      "E-mail": "manisha@infinalpha.com",
+      "Address": "Office No. 1101, Embassy Centre Premises Co Op. Soc. Ltd., Plot no. 207, Cadastral Survey No. 1954 of Fort Division, Block III, Backbay Reclamation Scheme, Nariman Point, MUMBAI, MAHARASHTRA, 400021",
+      "Contact Person": "MANISHA PATHAK",
+      "Validity": "Apr 06, 2026 - Perpetual"
+    },
+    {
+      "Name": "NanoPocket Ventures Fund",
+      "Registration No.": "IN/AIF1/26-27/2126",
+      "E-mail": "Investmentfunds@elp-in.com",
+      "Address": "c/o NanoPocket Ventures LLP, Corporate Membership No. - 526, WeWork Zenia, 4th Floor, Hiranandani Circle, Hiranandani Business Park, Thane, THANE, MAHARASHTRA, 400607",
+      "Contact Person": "Rachna Rangarajan",
+      "Validity": "Apr 06, 2026 - Perpetual"
+    }
+  ],
+  "removed": [],
+  "updated": []
+}
