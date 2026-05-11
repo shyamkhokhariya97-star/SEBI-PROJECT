@@ -164,6 +164,60 @@
     .diff-scroll {
       scrollbar-width: thin;
     }
+    .file-list-section {
+      background: #f8fafc;
+      border: 1px solid rgba(226,232,240,0.8);
+      border-radius: 1.5rem;
+      padding: 1rem 1.25rem;
+    }
+    .file-item {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 1.25rem;
+      padding: 0.95rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .file-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px -14px rgba(15,23,42,0.35);
+    }
+    .file-item-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1 1 auto;
+      min-width: 0;
+      color: #0f172a;
+      font-weight: 600;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .file-item-name span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .file-download-btn {
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 14px;
+      border: 1px solid #cbd5e1;
+      background: white;
+      color: #2563eb;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .file-download-btn:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 <body>
@@ -210,6 +264,14 @@
       <button id="refreshBtn" class="btn btn-modern btn-modern-outline"><i class="fas fa-sync-alt me-2"></i>Refresh file list</button>
       <button id="generateBtn" class="btn btn-modern btn-modern-primary" style="background: linear-gradient(95deg, #10b981 0%, #059669 100%); border: none;"><i class="fas fa-download me-2"></i>Generate New Records</button>
       <button id="compareBtn" class="btn btn-modern btn-modern-primary px-4"><i class="fas fa-code-compare me-2"></i>Compare JSON records</button>
+    </div>
+
+    <div class="file-list-section mb-4">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="section-title mb-0">Available JSON files</div>
+        <small class="text-secondary">Click the download icon to save any file locally.</small>
+      </div>
+      <div id="fileList" class="row row-cols-1 row-cols-md-2 g-3"></div>
     </div>
 
     <!-- Status panel (dynamic) -->
@@ -633,12 +695,14 @@
         }
         oldFileSelect.innerHTML = '<option disabled>— no files —</option>';
         newFileSelect.innerHTML = '<option disabled>— no files —</option>';
+        renderFileList(files);
         return;
       }
       // build option html with icons
       const optionsHtml = files.map(f => `<option value="${escapeHtml(f)}">📄 ${escapeHtml(f)}</option>`).join('');
       oldFileSelect.innerHTML = optionsHtml;
       newFileSelect.innerHTML = optionsHtml;
+      renderFileList(files);
       // smart default selection
       if (files.includes('sebi_record_1857.json')) oldFileSelect.value = 'sebi_record_1857.json';
       else oldFileSelect.value = files[0];
@@ -655,6 +719,50 @@
         setStatus('danger', `Unable to fetch file list: ${error.message}. Verify server is running.`, false);
       }
     }
+  }
+
+  function renderFileList(files) {
+    const fileList = document.getElementById('fileList');
+    if (!fileList) return;
+    if (!files || !files.length) {
+      fileList.innerHTML = '<div class="col"><div class="file-item">No JSON files available to download.</div></div>';
+      return;
+    }
+    fileList.innerHTML = '';
+    files.forEach(file => {
+      const col = document.createElement('div');
+      col.className = 'col';
+
+      const item = document.createElement('div');
+      item.className = 'file-item';
+
+      const nameContainer = document.createElement('div');
+      nameContainer.className = 'file-item-name';
+      nameContainer.innerHTML = `<i class="fas fa-file-lines text-primary"></i><span title="${escapeHtml(file)}">${escapeHtml(file)}</span>`;
+
+      const downloadBtn = document.createElement('button');
+      downloadBtn.type = 'button';
+      downloadBtn.className = 'file-download-btn';
+      downloadBtn.title = `Download ${file}`;
+      downloadBtn.innerHTML = '<i class="fas fa-download"></i>';
+      downloadBtn.addEventListener('click', () => downloadJsonFile(file));
+
+      item.appendChild(nameContainer);
+      item.appendChild(downloadBtn);
+      col.appendChild(item);
+      fileList.appendChild(col);
+    });
+  }
+
+  function downloadJsonFile(fileName) {
+    if (!fileName) return;
+    const url = `/download-file?file=${encodeURIComponent(fileName)}`;
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = fileName;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
   }
   
   // event listeners
