@@ -20,6 +20,8 @@ function sendText(res, text, type = 'text/plain', status = 200) {
   res.end(text);
 }
 
+
+
 function serveFile(res, filename, contentType) {
   const filePath = path.join(rootDir, filename);
   if (!fs.existsSync(filePath)) {
@@ -208,6 +210,32 @@ const server = http.createServer((req, res) => {
 
   if (url.pathname === '/files') {
     sendJSON(res, { files: listJsonFiles() });
+    return;
+  }
+
+  if (url.pathname === '/download-file') {
+    const file = url.searchParams.get('file');
+    if (!file) {
+      sendJSON(res, { error: 'file query parameter is required' }, 400);
+      return;
+    }
+    const filename = path.basename(file);
+    if (!filename.toLowerCase().endsWith('.json')) {
+      sendJSON(res, { error: 'Only .json files can be downloaded.' }, 400);
+      return;
+    }
+    const filePath = path.join(rootDir, filename);
+    if (!fs.existsSync(filePath)) {
+      sendJSON(res, { error: `File not found: ${filename}` }, 404);
+      return;
+    }
+    const content = fs.readFileSync(filePath);
+    res.writeHead(200, {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Content-Disposition': `attachment; filename="${filename}"`,
+      'Cache-Control': 'no-store'
+    });
+    res.end(content);
     return;
   }
 
